@@ -1,7 +1,6 @@
 {
   "type": "module",
   "dependencies": {
-    "asciichart": "^1.5.25",
     "cli-table3": "^0.6.5",
     "csv-parser": "^3.1.0"
   }
