@@ -48,8 +48,8 @@ Akhir kata, terima kasih 🙏🏻
 
 # Referensi 📃
 
-https://www.premierleague.com/
-https://www.khanacademy.org/math/statistics-probability
+- https://www.premierleague.com/
+- https://www.khanacademy.org/math/statistics-probability
 
 ---
 ---
