@@ -8,10 +8,16 @@
   },
   "type": "module",
   "dependencies": {
+    "chalk": "^5.4.1",
     "cli-table3": "^0.6.5",
-    "csv-parser": "^3.1.0"
+    "csv-parser": "^3.1.0",
+    "readline-sync": "^1.4.10"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "eslint": "^9.18.0",
+    "globals": "^15.14.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
