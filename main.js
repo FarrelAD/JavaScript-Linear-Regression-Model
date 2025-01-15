@@ -69,10 +69,10 @@ try {
  * - Diketahui data shot on target berada di indeks ke-4
  */
 
-const totalGoal = goalShotOnTargetTable.reduce((sum, val) => sum + BigInt(parseInt(val[3])), 0n)
-const totalShotOnTarget = goalShotOnTargetTable.reduce((sum, val) => sum + BigInt(parseInt(val[4])), 0n)
+const totalGoal = goalShotOnTargetTable.reduce((sum, val) => sum + parseInt(val[3]), 0)
+const totalShotOnTarget = goalShotOnTargetTable.reduce((sum, val) => sum + parseInt(val[4]), 0)
 
-console.log('Total Gol: ', totalGoal)
+console.log('\nTotal Gol: ', totalGoal)
 console.log('Total shot on target: ', totalShotOnTarget)
 
 
@@ -82,8 +82,8 @@ console.log('Total shot on target: ', totalShotOnTarget)
  */
 
 const squareTotalShotOnTarget = goalShotOnTargetTable.reduce((sum, val) => {
-    return sum + BigInt(val[4]) ** 2n
-}, 0n)
+    return sum + val[4] ** 2
+}, 0)
 
 console.log('Total data shot on target kuadrat: ', squareTotalShotOnTarget)
 
@@ -92,8 +92,8 @@ console.log('Total data shot on target kuadrat: ', squareTotalShotOnTarget)
  * Menghitung nilai total dari goal kali shot on target
  */
 const totalGoalTimesShotOnTarget = goalShotOnTargetTable.reduce((sum, val) => {
-    return sum + BigInt(parseInt(val[3]) * parseInt(val[4]))
-}, 0n)
+    return sum + parseInt(val[3]) * parseInt(val[4])
+}, 0)
 
 console.log('Total data jumlah gol kali shot on target: ', totalGoalTimesShotOnTarget)
 
@@ -102,7 +102,7 @@ console.log('Total data jumlah gol kali shot on target: ', totalGoalTimesShotOnT
 /**
  * Menghitung nilai total dari seluruh goal dengan seluruh shot on target
  */
-const totalAllGoalTimesShotOnTarget = BigInt(totalGoal * totalShotOnTarget)
+const totalAllGoalTimesShotOnTarget = totalGoal * totalShotOnTarget
 
 console.log('Total seluruh goal kali shot on target: ', totalAllGoalTimesShotOnTarget)
 
@@ -110,21 +110,48 @@ console.log('Total seluruh goal kali shot on target: ', totalAllGoalTimesShotOnT
  * Menentukan nilai b
  */
 
-const totalData = BigInt(goalShotOnTargetTable.length)
+const totalData = goalShotOnTargetTable.length
 console.log('Panjang data: ', totalData)
 
 const b = (
     ((totalData * totalGoalTimesShotOnTarget) - totalAllGoalTimesShotOnTarget) /
-    ((totalData * squareTotalShotOnTarget) - (totalShotOnTarget ** 2n))
+    ((totalData * squareTotalShotOnTarget) - (totalShotOnTarget ** 2))
 )
 
-console.log('Nilai b: ', b)
+console.log('\nNilai b: ', b)
 
 
 /**
  * Menentukan nilai a
  */
 
-const a = null
+const a = (totalGoal / totalData) - (b * (totalShotOnTarget / totalData))
 
 console.log('Nilai a: ', a)
+
+
+
+/**
+ * Menentukan persamaan
+ * 
+ * Persamaan dasar: f(x) = a + bx
+ * x : nilai shot on target yang diketahui
+ */
+
+const fx = (x) => a + (b * x)
+
+// Versi teks
+console.log(`\nDidapatkan persamaan: ${a} + ${b}x`)
+
+/**
+ * Percobaan pengujian
+ * 
+ * Menentukan perkiraan jumlah goal berdasarkan jumlah shot on target
+ * - Jika shot on target berjumlah 130
+ * - Jika shot on target berjumlah 234
+ * - Jika shot on target berjumlah 87
+ */
+
+console.log('\nTotal goal jika shot on target 130: ', fx(130))
+console.log('Total goal jika shot on target 234: ', fx(234))
+console.log('Total goal jika shot on target 87: ', fx(87))
