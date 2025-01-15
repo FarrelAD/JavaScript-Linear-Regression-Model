@@ -30,6 +30,11 @@ Berikut adalah contoh ketika program dijalankan:
 
 ![Preview program](docs/img/program-preview.gif)
 
+# Visualisasi 📊
+
+Jika Anda ingin melihat visualisasi data yang ada, maka Anda bisa membuka file berekstensi `.ggb` di folder [`visualization/`](visualization/) pada aplikasi Geogebra. Selain itu, Anda juga bisa membuka visualisasi pada link berikut: https://www.geogebra.org/calculator/yznnsq6y
+
+
 # Kustomisasi 🛠️
 
 Anda bisa melakukan kustomisasi pada proyek ini. Kustomisasi bisa dilakukan pada data yang digunakan ataupun alur kerja program. Jika anda ingin melakukan kustomisasi data, maka anda bisa ubah file `.csv` pada folder [`data/`](data/). Sesuaikan kembali  data target dan data berupa fitur atau input.
