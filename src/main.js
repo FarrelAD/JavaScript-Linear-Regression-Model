@@ -8,7 +8,8 @@ import csv from 'csv-parser'
 import Table from 'cli-table3'
 import readlineSync from 'readline-sync'
 
-
+import singleFeatureProcess from './single-feature.js'
+import multiFeatureProcess from './multi-feature.js'
 
 
 /**
@@ -161,54 +162,42 @@ async function previewData(filePath) {
     print('\n-----------------------------------------------------\n')
     print('Preview data: ', filePath)
 
-    await Promise.all([readFileAsync(path.join(DATA_DIR, filePath))])
-
+    await readFileAsync(path.join(DATA_DIR, filePath))
 
     if (readlineSync.keyInYNStrict(chalk.green('\nContinue next process'))) {
-        dataIdentification()
+        await dataIdentification()
     }
 }
 
 
 
 
-function dataIdentification() {
+async function dataIdentification() {
     print('\n-----------------------------------------------------\n')
-    print('Data identification!')
+    print('Data identification')
 
-    const feature = readlineSync.question('Choose feature: ')
-    const label = readlineSync.question('Choose label: ')
 
-    if (readlineSync.keyInYNStrict(chalk.green('\nContinue process data'))) {
-        processing()
+    const answers = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'type',
+            message: 'Choose model type',
+            choices: [
+                '1. Single feature',
+                '2. Multi feature'
+            ]
+        }
+    ])
+
+    switch (answers.type) {
+        case '1. Single feature':
+            singleFeatureProcess()
+            break;
+        case '2. Multi feature':
+            multiFeatureProcess()
+            break;
+        default:
+            print('Invalid input!')
+            break;
     }
-}
-
-
-
-
-function processing() {
-    print('\n-----------------------------------------------------\n')
-    print('Model processing!')
-    for (let i = 1; i <= 20; i++) {
-        print('iteration: ', i)
-    }
-
-    if (readlineSync.keyInYNStrict(chalk.green('\nShow visualization'))) {
-        visualization()
-    }
-}
-
-
-
-
-
-function visualization() {
-    print('\n-----------------------------------------------------\n')
-    print('Visualization here!')
-    print('Graph, chart, or whatever...')
-
-
-    // 7
-    print('Show the prove of linear equation is actually match with user data')
 }
