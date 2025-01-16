@@ -53,8 +53,11 @@ Akhir kata, terima kasih 🙏🏻
 
 # Referensi 📃
 
-- https://www.premierleague.com/
-- https://www.khanacademy.org/math/statistics-probability
+- [**"The Elements of Statistical Learning"** by Trevor Hastie, Robert Tibshirani, and Jerome Friedman](https://www.sas.upenn.edu/~fdiebold/NoHesitations/BookAdvanced.pdf)
+
+# Lihat juga 👁️
+
+- [**Linear Regression, Clearly Explained**: Youtube video by StatQuest with Josh Starmer](https://youtu.be/nk2CQITm_eo?si=CyoCEtAnBETJYT3E)
 
 ---
 ---
