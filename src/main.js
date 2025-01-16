@@ -4,6 +4,8 @@ import { fileURLToPath } from 'url'
 import { exit } from 'process'
 import chalk from 'chalk'
 import inquirer from 'inquirer'
+import csv from 'csv-parser'
+import Table from 'cli-table3'
 import readlineSync from 'readline-sync'
 
 
@@ -20,7 +22,7 @@ const print = console.log
  */
 
 
-const dataDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data')
+const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data')
 
 const showGuide = () => {
     print('This is a guide for this program!');
@@ -29,36 +31,66 @@ const showGuide = () => {
     }
 
 
-    if (!readlineSync.keyInYNStrict(chalk.green('Back?'))) {
+    if (!readlineSync.keyInYNStrict(chalk.green('\nBack'))) {
         exit(0)
     }
 }
 
-const runDemo = () => {
+const runDemo = async () => {
     let files
     try {
         print('Scanning data input file ...')
-        files = fs.readdirSync(dataDir)
-
-        print('Choose file to do simple demo linear regression: ')
-        files.forEach(file => {
-            print(chalk.blue('- ', file))
-        })
+        files = fs.readdirSync(DATA_DIR)
     } catch (error) {
         print(chalk.red('Error reading directory: ', error.message))
         return;
     }
 
-    if (readlineSync.keyInYNStrict(chalk.green('Preview data?'))) {
-        previewData('data passed')
+
+    const answers = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'data',
+            message: 'Choose data',
+            choices: files
+        }
+    ])
+
+    if (readlineSync.keyInYNStrict(chalk.green('\nPreview data'))) {
+        await previewData(answers.data)
     }
-    
 }
 
-const previewData = (data) => {
-    print('Preview data: ', data)
+const readFileAsync = (filePath) => {
+    return new Promise((resolve, reject) => {
+        const data = []
+        fs.createReadStream(filePath)
+            .pipe(csv())
+            .on('data', (row) => data.push(row))
+            .on('end', () => {
+                const table = new Table({
+                    head: Object.keys(data[0])
+                })
 
-    if (readlineSync.keyInYNStrict(chalk.green('Continue next process?'))) {
+                data.forEach(row => {
+                    table.push(Object.values(row))
+                })
+
+                console.log(table.toString())
+                resolve()
+            })
+            .on('error', (error) => reject(error))
+    })
+}
+
+const previewData = async (filePath) => {
+    print('\n-----------------------------------------------------\n')
+    print('Preview data: ', filePath)
+
+    await Promise.all([readFileAsync(path.join(DATA_DIR, filePath))])
+
+
+    if (readlineSync.keyInYNStrict(chalk.green('\nContinue next process'))) {
         dataIdentification()
     }
 }
@@ -67,11 +99,12 @@ const previewData = (data) => {
 
 
 const dataIdentification = () => {
+    print('\n-----------------------------------------------------\n')
     print('Data identification!')
     const feature = readlineSync.question('Choose feature: ')
     const label = readlineSync.question('Choose label: ')
 
-    if (readlineSync.keyInYNStrict(chalk.green('Continue process data?'))) {
+    if (readlineSync.keyInYNStrict(chalk.green('\nContinue process data'))) {
         processing()
     }
 }
@@ -80,12 +113,13 @@ const dataIdentification = () => {
 
 
 const processing = () => {
+    print('\n-----------------------------------------------------\n')
     print('Model processing!')
     for (let i = 1; i <= 20; i++) {
         print('iteration: ', i)
     }
 
-    if (readlineSync.keyInYNStrict(chalk.green('Show visualization: '))) {
+    if (readlineSync.keyInYNStrict(chalk.green('\nShow visualization'))) {
         visualization()
     }
 }
@@ -95,6 +129,7 @@ const processing = () => {
 
 
 const visualization = () => {
+    print('\n-----------------------------------------------------\n')
     print('Visualization here!')
     print('Graph, chart, or whatever...')
 
@@ -122,7 +157,7 @@ const visualization = () => {
 ////  MYMMMM9     _MM_    _dM_     _dMM__MM_    \M\_   _MM_     /////
 /////////////////////////////////////////////////////////////////////
 
-async function main() {
+const main = async () => {
     do {
         console.clear()
         print(`
@@ -152,7 +187,7 @@ SIMPLE LINEAR REGRESSION DEMO
                 showGuide()
                 break;
             case '2. Run Demo':
-                runDemo()
+                await runDemo()
                 break;
             case '3. Exit':
                 print('Thanks, bye!')
