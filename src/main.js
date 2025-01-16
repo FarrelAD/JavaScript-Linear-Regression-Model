@@ -3,6 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { exit } from 'process'
 import chalk from 'chalk'
+import inquirer from 'inquirer'
 import readlineSync from 'readline-sync'
 
 
@@ -109,7 +110,7 @@ const visualization = () => {
 
 
 /////////////////////////////////////////////////////////////////////
-////  6MMMMb\ MMMMMMMMMM       dM.     `MMMMMMMb.  MMMMMMMMMM   /////
+////   6MMMMb\ MMMMMMMMMM       dM.     `MMMMMMMb.  MMMMMMMMMM  /////
 ////  6M'    ` /   MM   \      ,MMb      MM    `Mb  /   MM   \  /////
 ////  MM           MM          d'YM.     MM     MM      MM      /////
 ////  YM.          MM         ,P `Mb     MM     MM      MM      /////
@@ -121,39 +122,47 @@ const visualization = () => {
 ////  MYMMMM9     _MM_    _dM_     _dMM__MM_    \M\_   _MM_     /////
 /////////////////////////////////////////////////////////////////////
 
-do {
-    console.clear()
-    print(`
+async function main() {
+    do {
+        console.clear()
+        print(`
 ==========================
         WELCOME!
 ==========================
 SIMPLE LINEAR REGRESSION DEMO
-==========================
------------MENU-----------
-==========================
-1. Guide
-2. Run demo
-3. Exit
-==========================
-    `)
+        `)
 
-    const selectedMenu = readlineSync.questionInt(chalk.green('Choose menu: '))
-    console.clear()
+        const answers = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'menu',
+                message: 'Choose menu',
+                choices: [
+                    '1. Guide',
+                    '2. Run Demo',
+                    '3. Exit'
+                ]
+            }
+        ])
 
-    switch (selectedMenu) {
-        case 1:
-            showGuide()
-            break;
-        case 2:
-            runDemo()
-            break;
-        case 3:
-            print('Bye!')
-            exit(0);
-            break;
-        default:
-            print('Invalid input! Menu can not be found!')
-            break;
-    }
+        console.clear()
+    
+        switch (answers.menu) {
+            case '1. Guide':
+                showGuide()
+                break;
+            case '2. Run Demo':
+                runDemo()
+                break;
+            case '3. Exit':
+                print('Thanks, bye!')
+                exit(0)
+                break;
+            default:
+                print('Invalid input!')
+                break;
+        }
+    } while (readlineSync.keyInYNStrict(chalk.green('\nContinue program? ')))
+}
 
-} while (readlineSync.keyInYNStrict(chalk.green('\nContinue program? ')))
+main()
