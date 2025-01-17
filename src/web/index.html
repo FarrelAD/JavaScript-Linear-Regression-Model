@@ -31,9 +31,22 @@
                 class="w-full mt-5 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
         </form>
 
-        <div id="preview-data-container" style="display: none; margin-top: 5rem;">
+        <div id="preview-data-container" style="display: none; margin-top: 3rem;">
 
         </div>
+
+        <hr>
+
+        <div class="flex flex-col items-center justify-center space-y-2">
+            <label for="fruit-select"
+                class="text-indigo-600 py-2 px-4">
+                Select Model
+            </label>
+            <select id="fruit-select" name="fruit" class="border border-indigo-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <option value="single">Single feature</option>
+                <option value="multi">Multi feature</option>
+            </select>
+        </div>                
     </main>
 
     <script src="script.js"></script>
