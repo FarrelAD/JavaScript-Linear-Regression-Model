@@ -3,10 +3,9 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { exit } from 'process'
 import chalk from 'chalk'
-import inquirer from 'inquirer'
+import { confirm, select } from '@inquirer/prompts'
 import csv from 'csv-parser'
 import Table from 'cli-table3'
-import readlineSync from 'readline-sync'
 
 import singleFeatureProcess from './single-feature.js'
 import multiFeatureProcess from './multi-feature.js'
@@ -49,24 +48,21 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '
 SIMPLE LINEAR REGRESSION DEMO
         `)
 
-        const answers = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'menu',
-                message: 'Choose menu',
-                choices: [
-                    '1. Guide',
-                    '2. Run Demo',
-                    '3. Exit'
-                ]
-            }
-        ])
+        const answers = await select({
+            message: 'Choose menu',
+            choices: [
+                '1. Guide',
+                '2. Run Demo',
+                '3. Exit'
+            ]
+        })
 
         console.clear()
-    
-        switch (answers.menu) {
+
+
+        switch (answers) {
             case '1. Guide':
-                showGuide()
+                await showGuide()
                 break;
             case '2. Run Demo':
                 await runDemo()
@@ -79,7 +75,7 @@ SIMPLE LINEAR REGRESSION DEMO
                 print('Invalid input!')
                 break;
         }
-    } while (readlineSync.keyInYNStrict(chalk.green('\nContinue program? ')))
+    } while (await confirm({ message: '\nContinue program? ' }))
 })();
 
 
@@ -87,14 +83,14 @@ SIMPLE LINEAR REGRESSION DEMO
 
 
 
-function showGuide() {
+async function showGuide() {
     print('This is a guide for this program!');
     for (let i = 1; i <= 5; i++) {
         print('Data: ', i)
     }
 
 
-    if (!readlineSync.keyInYNStrict(chalk.green('\nBack'))) {
+    if (!await confirm({ message: 'Back?'})) {
         exit(0)
     }
 }
@@ -114,21 +110,15 @@ async function runDemo() {
     }
 
 
-    const answers = await inquirer.prompt([
-        {
-            type: 'list',
-            name: 'data',
-            message: 'Choose data',
-            choices: files
-        }
-    ])
+    const answers = await select({
+        message: 'Choose data',
+        choices: files
+    })
 
-    if (readlineSync.keyInYNStrict(chalk.green('\nPreview data'))) {
-        await previewData(answers.data)
+    if (await confirm({ message: 'Preview data?'})) {
+        await previewData(answers)
     }
 }
-
-
 
 
 
@@ -142,8 +132,6 @@ function readFileAsync(filePath) {
             .on('error', (error) => reject(error))
     })
 }
-
-
 
 
 
@@ -163,11 +151,10 @@ async function previewData(filePath) {
 
     print(table.toString())
 
-    if (readlineSync.keyInYNStrict(chalk.green('\nContinue next process'))) {
+    if (await confirm({ message: '\nContinue next process' })) {
         await dataIdentification(data)
     }
 }
-
 
 
 
@@ -176,19 +163,15 @@ async function dataIdentification(data) {
     print('Data identification')
 
 
-    const answers = await inquirer.prompt([
-        {
-            type: 'list',
-            name: 'type',
-            message: 'Choose model type',
-            choices: [
-                '1. Single feature',
-                '2. Multi feature'
-            ]
-        }
-    ])
-
-    switch (answers.type) {
+    const answers = await select({
+        message: 'Choose model type',
+        choices: [
+            '1. Single feature',
+            '2. Multi feature'
+        ]
+    })
+    
+    switch (answers) {
         case '1. Single feature':
             await singleFeatureProcess(data)
             break;

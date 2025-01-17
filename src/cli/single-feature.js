@@ -1,5 +1,4 @@
 import chalk from 'chalk'
-import readlineSync from 'readline-sync'
 import inquirer from 'inquirer'
 import { input, confirm } from '@inquirer/prompts'
 
@@ -71,10 +70,6 @@ export default async function singleFeatureProcess(data) {
     
 
     evaluation()
-
-    if (readlineSync.keyInYNStrict(chalk.green('\nShow visualization'))) {
-        visualization()
-    }
 }
 
 
@@ -87,16 +82,4 @@ async function testing(y, feature, label) {
 function evaluation() {
     print('Evaluation!')
     print('MSE, MAE, RMSE')
-}
-
-
-
-function visualization() {
-    print('\n-----------------------------------------------------\n')
-    print('Visualization here!')
-    print('Graph, chart, or whatever...')
-
-
-    // 7
-    print('Show the prove of linear equation is actually match with user data')
 }

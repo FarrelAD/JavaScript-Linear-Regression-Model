@@ -1,14 +1,13 @@
-import chalk from 'chalk'
-import readlineSync from 'readline-sync'
+import { confirm } from '@inquirer/prompts'
 
 
 const print = console.log;
 
 
-export default function multiFeatureProcess() {
+export default async function multiFeatureProcess() {
     print('Multi feature process')
 
-    if (readlineSync.keyInYNStrict(chalk.green('\nShow visualization'))) {
+    if (await confirm({ message: 'Show visualization?'})) {
         visualization()
     }
 }
