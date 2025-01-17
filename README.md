@@ -27,10 +27,6 @@ Berikut adalah contoh ketika program dijalankan:
 
 ![Preview program](docs/img/program-preview.gif)
 
-# Visualisasi 📊
-
-Jika Anda ingin melihat visualisasi data yang ada, maka Anda bisa membuka file berekstensi `.ggb` di folder [`visualization/`](visualization/) pada aplikasi Geogebra. Selain itu, Anda juga bisa membuka visualisasi pada link berikut: https://www.geogebra.org/calculator/yznnsq6y
-
 
 # Kustomisasi 🛠️
 
