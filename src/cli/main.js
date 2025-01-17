@@ -33,45 +33,43 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '
 ////  MYMMMM9     _MM_    _dM_     _dMM__MM_    \M\_   _MM_     /////
 /////////////////////////////////////////////////////////////////////
 
-(async function() {
-    do {
-        console.clear()
-        print(`
+do {
+    console.clear()
+    print(`
 ==========================
-        WELCOME!
+    WELCOME!
 ==========================
 SIMPLE LINEAR REGRESSION DEMO
-        `)
+    `)
 
-        const answers = await select({
-            message: 'Choose menu',
-            choices: [
-                '1. Guide',
-                '2. Run Demo',
-                '3. Exit'
-            ]
-        })
+    const answers = await select({
+        message: 'Choose menu',
+        choices: [
+            '1. Guide',
+            '2. Run Demo',
+            '3. Exit'
+        ]
+    })
 
-        console.clear()
+    console.clear()
 
 
-        switch (answers) {
-            case '1. Guide':
-                await showGuide()
-                break;
-            case '2. Run Demo':
-                await runDemo()
-                break;
-            case '3. Exit':
-                print('Thanks, bye!')
-                exit(0)
-                break;
-            default:
-                print('Invalid input!')
-                break;
-        }
-    } while (await confirm({ message: '\nContinue program? ' }))
-})();
+    switch (answers) {
+        case '1. Guide':
+            await showGuide()
+            break;
+        case '2. Run Demo':
+            await runDemo()
+            break;
+        case '3. Exit':
+            print('Thanks, bye!')
+            exit(0)
+            break;
+        default:
+            print('Invalid input!')
+            break;
+    }
+} while (await confirm({ message: '\nContinue program? ' }))
 
 
 
