@@ -4,6 +4,7 @@ import { input, confirm } from '@inquirer/prompts'
 
 
 
+// Simplify std out from `console.log` into `print`
 const print = console.log;
 
 
@@ -17,8 +18,7 @@ const print = console.log;
  * @param {Array} data - the raw data
  */
 export default async function singleFeatureProcess(data) {
-    console.clear()
-    print('\n=====================================================\n')
+    print('=====================================================\n')
     print(chalk.blue('SINGLE FEATURE PROCESS\n'))
 
     const answers = await inquirer.prompt([
@@ -35,6 +35,21 @@ export default async function singleFeatureProcess(data) {
             choices: Object.keys(data[0])
         }
     ])
+
+    if (answers.feature == answers.label) {
+        print(chalk.bgMagenta('Feature and label can not be same'))
+        
+        if (await confirm({ message: 'Back?'})) return;
+    }
+
+
+    for (const item of data) {
+        if (!Number.isNaN(item[answers.feature]) || !Number.isNaN(item[answers.label])) {
+            print(chalk.redBright('\n[!]  Some data is not a number! Unable to process further!'))
+            await confirm({ message: 'Continue?'})
+            return;
+        }
+    }
 
 
     /**
