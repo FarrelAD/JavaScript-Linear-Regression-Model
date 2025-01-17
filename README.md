@@ -54,6 +54,7 @@ Akhir kata, terima kasih 🙏🏻
 # Referensi 📃
 
 - [**"The Elements of Statistical Learning"** by Trevor Hastie, Robert Tibshirani, and Jerome Friedman](https://www.sas.upenn.edu/~fdiebold/NoHesitations/BookAdvanced.pdf)
+- [**"Mathematics for Machine Learning" by Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong**](https://mml-book.github.io/)
 
 # Lihat juga 👁️
 
