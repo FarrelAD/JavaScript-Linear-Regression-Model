@@ -23,7 +23,7 @@ import multiFeatureProcess from './multi-feature.js'
 const print = console.log;
 
 
-const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data');
+const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'data');
 
 
 /////////////////////////////////////////////////////////////////////
@@ -138,18 +138,7 @@ function readFileAsync(filePath) {
         fs.createReadStream(filePath)
             .pipe(csv())
             .on('data', (row) => data.push(row))
-            .on('end', () => {
-                const table = new Table({
-                    head: Object.keys(data[0])
-                })
-
-                data.forEach(row => {
-                    table.push(Object.values(row))
-                })
-
-                console.log(table.toString())
-                resolve()
-            })
+            .on('end', () => resolve(data))
             .on('error', (error) => reject(error))
     })
 }
@@ -162,17 +151,27 @@ async function previewData(filePath) {
     print('\n-----------------------------------------------------\n')
     print('Preview data: ', filePath)
 
-    await readFileAsync(path.join(DATA_DIR, filePath))
+    const data = await readFileAsync(path.join(DATA_DIR, filePath))
+
+    const table = new Table({
+        head: Object.keys(data[0])
+    })
+
+    data.forEach(row => {
+        table.push(Object.values(row))
+    })
+
+    print(table.toString())
 
     if (readlineSync.keyInYNStrict(chalk.green('\nContinue next process'))) {
-        await dataIdentification()
+        await dataIdentification(data)
     }
 }
 
 
 
 
-async function dataIdentification() {
+async function dataIdentification(data) {
     print('\n-----------------------------------------------------\n')
     print('Data identification')
 
@@ -191,10 +190,10 @@ async function dataIdentification() {
 
     switch (answers.type) {
         case '1. Single feature':
-            singleFeatureProcess()
+            await singleFeatureProcess(data)
             break;
         case '2. Multi feature':
-            multiFeatureProcess()
+            await multiFeatureProcess(data)
             break;
         default:
             print('Invalid input!')
