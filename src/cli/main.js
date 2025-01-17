@@ -11,11 +11,6 @@ import singleFeatureProcess from './single-feature.js'
 import multiFeatureProcess from './multi-feature.js'
 
 
-/**
- * TODO:
- * 
- * - Just complete the program flow based on some print below [2/7]
- */
 
 
 // Simplify std out from `console.log` into `print`
@@ -97,8 +92,6 @@ async function showGuide() {
 
 
 
-
-
 async function runDemo() {
     let files
     try {
@@ -170,6 +163,8 @@ async function dataIdentification(data) {
             '2. Multi feature'
         ]
     })
+
+    console.clear()
     
     switch (answers) {
         case '1. Single feature':
