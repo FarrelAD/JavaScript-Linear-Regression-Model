@@ -4,7 +4,9 @@ import { input, confirm } from '@inquirer/prompts'
 
 
 
-// Simplify std out from `console.log` into `print`
+/**
+ * Simplify std out from `console.log` into `print`
+ */
 const print = console.log;
 
 
@@ -13,7 +15,7 @@ const print = console.log;
  * Process linear regression with single feature
  * 
  * Formula
- * y = a + bx
+ * `y = β0 ​+ β1​x1`
  * 
  * @param {Array} data - the raw data
  */
@@ -39,7 +41,8 @@ export default async function singleFeatureProcess(data) {
     if (answers.feature == answers.label) {
         print(chalk.redBright('\n[!]  Feature and label can not be same'))
         
-        if (await confirm({ message: 'Back?'})) return;
+        await confirm({ message: 'Back?'})
+        return
     }
 
 
@@ -48,15 +51,35 @@ export default async function singleFeatureProcess(data) {
         if (!numberPattern.test(item[answers.feature]) || !numberPattern.test(item[answers.label])) {
             print(chalk.redBright('\n[!]  Some data is not a number! Unable to process further!'))
             await confirm({ message: 'Continue?'})
-            return;
+            return
         }
     }
 
 
-    /**
-     * Calculate the value a and b to get equation y = a + bx
-     * Let's assume `feature` is `x` and `label` is `y`
-    */
+    const equation = modelling(data, answers)
+
+
+    if (await confirm({ message: 'Do you want to test?'})) {
+        do {
+            await testing(equation, answers.feature, answers.label)
+        } while (await confirm({ message: 'Do you want to test again?'}));
+    }
+}
+
+
+
+/**
+ * Calculate the value a and b to get equation y = a + bx
+ * a : intercept
+ * b : slope
+ * 
+ * `feature` is `x` and `label` is `y`
+ * 
+ * @param {Array} data - raw data
+ * @param {Object} answers - the input of features and label from user
+ * @returns {function(x): number} a function of linear equation
+ */
+function modelling(data, answers) {
     const sumX = data.reduce((sum, val) => sum + parseInt(val[answers.feature]), 0)
     const sumY = data.reduce((sum, val) => sum + parseInt(val[answers.label]), 0)
     const sumXY = data.reduce((sum, val) => sum + (parseInt(val[answers.feature]) * parseInt(val[answers.label])), 0)
@@ -70,32 +93,22 @@ export default async function singleFeatureProcess(data) {
 
     const a = (sumY / data.length) - (b * (sumX / data.length))
 
-    // Equation result
+    /**
+     * Linear equation result based on data processing
+     * 
+     * @param {number} x - a feature data
+     * @returns {number} a label/target/`y` value result
+     */
     const y = (x) => a + (b * x)
 
     // Print the equation
-    print(chalk.blueBright(`\nEquation result: ${a} + ${b}x`))
+    print(chalk.blueBright(`\nEquation result: y = ${a} + ${b}x`))
 
-
-
-    if (await confirm({ message: 'Do you want to test?'})) {
-        do {
-            await testing(y, answers.feature, answers.label)
-        } while (await confirm({ message: 'Do you want to test again?'}));
-    }
-    
-
-    evaluation()
+    return y
 }
 
 
-async function testing(y, feature, label) {
+async function testing(equation, feature, label) {
     const inputFeature = await input({message: `Input ${feature}`})
-    print(`Prediction ${label}: ${y(inputFeature)}`)
-}
-
-
-function evaluation() {
-    print('Evaluation!')
-    print('MSE, MAE, RMSE')
+    print(`Prediction ${label}: ${equation(inputFeature)}`)
 }
