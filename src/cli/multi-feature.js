@@ -1,7 +1,7 @@
 import process from 'process'
 import chalk from 'chalk'
 import inquirer from 'inquirer'
-import { input, confirm } from '@inquirer/prompts'
+import { confirm } from '@inquirer/prompts'
 
 
 
@@ -47,14 +47,25 @@ export default async function multiFeatureProcess(data) {
     }
 
 
-    // const numberPattern = /^[+-]?\d+(\.\d+)?$/
-    // for (const item of data) {
-    //     if (!numberPattern.test(item[answers.features]) || !numberPattern.test(item[answers.label])) {
-    //         print(chalk.redBright('\n[!]  Some data is not a number! Unable to process further!'))
-    //         await confirm({ message: 'Continue?'})
-    //         return;
-    //     }
-    // }
+    /**
+     * Raw data validation. Make sure all feature and label are number
+     */
+    const numberPattern = /^[+-]?\d+(\.\d+)?$/
+    for (const item of data) {
+        if (!numberPattern.test(item[answers.label])) {
+            print(chalk.redBright('\n[!]  Some data is not a number! Unable to process further!'))
+            await confirm({ message: 'Continue?'})
+            return;
+        }
+
+        for (const feature of answers.features) {
+            if (!numberPattern.test(item[feature])) {
+                print(chalk.redBright('\n[!]  Some data is not a number! Unable to process further!'))
+                await confirm({ message: 'Continue?'})
+                return;
+            }
+        }
+    }
 
 
     /**
@@ -91,12 +102,12 @@ export default async function multiFeatureProcess(data) {
     /**
      * INSPECTION!
      */
-    print('sumY: ', sumY)
-    print('sumXi: ', sumXi)
-    print('slopes: ', slopes)
-    print('sumXiSquare: ', sumXiSquared)
-    print('sumAllXiSquared: ', sumAllXiSquared)
-    print('sumXiYi: ', sumXiYi)
+    // print('sumY: ', sumY)
+    // print('sumXi: ', sumXi)
+    // print('slopes: ', slopes)
+    // print('sumXiSquare: ', sumXiSquared)
+    // print('sumAllXiSquared: ', sumAllXiSquared)
+    // print('sumXiYi: ', sumXiYi)
 
     const a = (sumY / data.length) - sumSlopeiXi
 
@@ -119,9 +130,6 @@ export default async function multiFeatureProcess(data) {
             await testing(y, answers.features, answers.label)
         } while (await confirm({ message: 'Do you want to test again?'}));
     }
-    
-
-    evaluation()
 }
 
 
@@ -136,10 +144,4 @@ async function testing(y, features, label) {
     
     const inputFeatures = await inquirer.prompt(inputInquirer)
     print(`Prediction ${label}:`, chalk.blueBright(`${y(Object.values(inputFeatures))}`))
-}
-
-
-function evaluation() {
-    print('Evaluation!')
-    print('MSE, MAE, RMSE')
 }
