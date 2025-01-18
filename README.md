@@ -1,4 +1,4 @@
-Ini adalah percobaan implementasi model regresi linear pada program komputer. Program dibuat dengan bahasa pemrograman JavaScript dan dengan *runtime* [Node.js](https://nodejs.org/). Program ini sepenuhnya berjalan di terminal atau command line interface.
+Ini adalah percobaan implementasi model regresi linear pada program komputer. Program dibuat dengan bahasa pemrograman JavaScript dan dengan *runtime* [Node.js](https://nodejs.org/) dengan tanpa menggunakan bantuan library atau framework pembantu perhitungan matematis. Program yang dibuat ada dua versi, CLI (*Command Line Interface*) dan juga website.
 
 <div align="center">
     <img src="docs/img/linear-graph-gif.gif">
@@ -30,7 +30,7 @@ Berikut adalah contoh ketika program dijalankan:
 
 # Kustomisasi 🛠️
 
-Anda bisa melakukan kustomisasi pada proyek ini. Kustomisasi bisa dilakukan pada data yang digunakan ataupun alur kerja program. Jika anda ingin melakukan kustomisasi data, maka anda bisa ubah file `.csv` pada folder [`data/`](data/). Sesuaikan kembali  data target dan data berupa fitur atau input.
+Anda bisa melakukan kustomisasi pada proyek ini. Kustomisasi bisa dilakukan pada data yang digunakan ataupun alur kerja program. Jika anda ingin melakukan kustomisasi data, maka anda bisa ubah file `.csv` pada folder [`data/`](data/). 
 
 # Kontribusi 🫱🏻‍🫲🏻
 
@@ -40,7 +40,7 @@ Anda juga bisa mengajukan kritik atau saran dengan membuka [*issue*]() di reposi
 
 # Penutup 🍃
 
-Demikian proyek sederhana yang dibuat dengan tujuan melakukan demonstrasi regresi linear pada studi kasus liga Inggris (English Premier League). Proyek ini juga bisa menjadi acuan dalam pembelajaran terkait model-model *machine learning* yang lebih kompleks. 
+Demikian proyek sederhana yang dibuat dengan tujuan melakukan demonstrasi regresi linear menggunakan bahasa pemrograman JavaScript dan *runtime* Node.js. Proyek ini juga bisa menjadi acuan dalam pembelajaran terkait model-model *machine learning* yang lebih kompleks. 
 
 Akhir kata, terima kasih 🙏🏻
 
