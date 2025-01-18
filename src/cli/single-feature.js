@@ -37,14 +37,15 @@ export default async function singleFeatureProcess(data) {
     ])
 
     if (answers.feature == answers.label) {
-        print(chalk.bgMagenta('Feature and label can not be same'))
+        print(chalk.redBright('\n[!]  Feature and label can not be same'))
         
         if (await confirm({ message: 'Back?'})) return;
     }
 
 
+    const numberPattern = /^[+-]?\d+(\.\d+)?$/
     for (const item of data) {
-        if (!Number.isNaN(item[answers.feature]) || !Number.isNaN(item[answers.label])) {
+        if (!numberPattern.test(item[answers.feature]) || !numberPattern.test(item[answers.label])) {
             print(chalk.redBright('\n[!]  Some data is not a number! Unable to process further!'))
             await confirm({ message: 'Continue?'})
             return;
