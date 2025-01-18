@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { readdir } from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { exit } from 'process'
@@ -35,12 +36,12 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '
 
 do {
     console.clear()
-    print(`
-==========================
+    print(
+`==========================
     WELCOME!
 ==========================
 SIMPLE LINEAR REGRESSION DEMO
-    `)
+`)
 
     const answers = await select({
         message: 'Choose menu',
@@ -55,21 +56,11 @@ SIMPLE LINEAR REGRESSION DEMO
 
 
     switch (answers) {
-        case '1. Guide':
-            await showGuide()
-            break;
-        case '2. Run Demo':
-            await runDemo()
-            break;
-        case '3. Exit':
-            print('Thanks, bye!')
-            exit(0)
-            break;
-        default:
-            print('Invalid input!')
-            break;
+        case '1. Guide': await showGuide(); break;
+        case '2. Run Demo': await runDemo(); break;
+        case '3. Exit': print('Thanks, bye!'); exit(0);
     }
-} while (await confirm({ message: '\nContinue program? ' }))
+} while (await confirm({ message: 'Continue program?' }))
 
 
 
@@ -94,7 +85,7 @@ async function runDemo() {
     let files
     try {
         print('Scanning data input file ...')
-        files = fs.readdirSync(DATA_DIR)
+        files = await readdir(DATA_DIR)
     } catch (error) {
         print(chalk.red('Error reading directory: ', error.message))
         return;
@@ -142,7 +133,7 @@ async function previewData(filePath) {
 
     print(table.toString())
 
-    if (await confirm({ message: '\nContinue next process' })) {
+    if (await confirm({ message: 'Continue next process' })) {
         await dataIdentification(data)
     }
 }
@@ -150,7 +141,8 @@ async function previewData(filePath) {
 
 
 async function dataIdentification(data) {
-    print('\n-----------------------------------------------------\n')
+    console.clear()
+    print('-----------------------------------------------------\n')
     print('Data identification')
 
 
@@ -165,14 +157,7 @@ async function dataIdentification(data) {
     console.clear()
     
     switch (answers) {
-        case '1. Single feature':
-            await singleFeatureProcess(data)
-            break;
-        case '2. Multi feature':
-            await multiFeatureProcess(data)
-            break;
-        default:
-            print('Invalid input!')
-            break;
+        case '1. Single feature': await singleFeatureProcess(data); break;
+        case '2. Multi feature': await multiFeatureProcess(data); break;
     }
 }
