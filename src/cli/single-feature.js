@@ -80,10 +80,10 @@ export default async function singleFeatureProcess(data) {
  * @returns {function(x): number} a function of linear equation
  */
 function modelling(data, answers) {
-    const sumX = data.reduce((sum, val) => sum + parseInt(val[answers.feature]), 0)
-    const sumY = data.reduce((sum, val) => sum + parseInt(val[answers.label]), 0)
-    const sumXY = data.reduce((sum, val) => sum + (parseInt(val[answers.feature]) * parseInt(val[answers.label])), 0)
-    const sumXSquared = data.reduce((sum, val) => sum + parseInt(val[answers.feature]) ** 2, 0)
+    const sumX = data.reduce((sum, val) => sum + parseFloat(val[answers.feature]), 0)
+    const sumY = data.reduce((sum, val) => sum + parseFloat(val[answers.label]), 0)
+    const sumXY = data.reduce((sum, val) => sum + (parseFloat(val[answers.feature]) * parseFloat(val[answers.label])), 0)
+    const sumXSquared = data.reduce((sum, val) => sum + parseFloat(val[answers.feature]) ** 2, 0)
     const sumXTimesSumY = sumX * sumY
 
     const b = (
