@@ -101,7 +101,7 @@ export default async function multiFeatureProcess(data) {
     const a = (sumY / data.length) - sumSlopeiXi
 
     // Equation result
-    const y = (...x) => a + slopes.reduce((sum, val, index) => sum + (val * x[index]))
+    const y = (x) => a + slopes.reduce((sum, val, index) => sum + (val * x[index]))
 
 
     // Print the equation
@@ -112,11 +112,11 @@ export default async function multiFeatureProcess(data) {
         if (index != slopes.length - 1) process.stdout.write(chalk.blueBright(' + '))
     })
 
-
+    print('\n\r')
 
     if (await confirm({ message: 'Do you want to test?'})) {
         do {
-            await testing(y, answers.feature, answers.label)
+            await testing(y, answers.features, answers.label)
         } while (await confirm({ message: 'Do you want to test again?'}));
     }
     
@@ -125,9 +125,17 @@ export default async function multiFeatureProcess(data) {
 }
 
 
-async function testing(y, feature, label) {
-    const inputFeature = await input({message: `Input ${feature}`})
-    print(`Prediction ${label}: ${y(inputFeature)}`)
+async function testing(y, features, label) {
+    const inputInquirer = features.map(feature => {
+        return {
+            type: 'number',
+            name: feature,
+            message: `Input ${feature}`
+        }
+    })
+    
+    const inputFeatures = await inquirer.prompt(inputInquirer)
+    print(`Prediction ${label}:`, chalk.blueBright(`${y(Object.values(inputFeatures))}`))
 }
 
 
