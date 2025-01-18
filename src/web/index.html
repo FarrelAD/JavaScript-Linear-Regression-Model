@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS Linear Regression</title>
+    <link rel="icon" href="assets/icon/king-js.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -14,39 +15,60 @@
 </head>
 
 <body>
-    <main class="container mx-auto border lg:p-0 p-5 min-h-screen">
-        <h1 class="font-bold text-2xl text-center">JS Linear Regression</h1>
+    <main class="container mx-auto border lg:px-0 p-5 min-h-screen">
+        <h1 class="font-bold text-2xl text-center flex items-baseline justify-center space-x-2 mx-auto">
+            <svg width="1.75em" height="1.75em" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="300" height="300" fill="#F7DF1E"/>
+                <path d="M107 146L176.5 148.5L177 176.5L104.5 237H32L7.5 275.5C41.3333 277.833 109.6 282.5 112 282.5C114.4 282.5 168 243.833 194.5 224.5L223.5 122.5L134.5 92L92 104.5L107 146Z" fill="black"/>
+                <path d="M284.5 196.5V140L238.5 150.5L207.5 237L250.5 250.5L207.5 255L184.5 289L280 282.5L290.5 244.5L247.5 206.5L284.5 196.5Z" fill="black"/>
+                <path d="M228.5 104.5L142.5 75L156.5 5L184.5 42L243.5 25.5L228.5 68.5L280 71L228.5 104.5Z" fill="black"/>
+            </svg>
+            <span>Linear Regression</span>
+        </h1>        
+        
 
-        <form id="data-form" class="mt-5">
-            <div class="flex items-center justify-center">
-                <label for="file-upload"
-                    class="cursor-pointer bg-indigo-100 text-indigo-600 py-2 px-4 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    Upload File
-                </label>
-                <input id="file-upload" type="file" class="hidden" name="data"/>
+        <section>
+            <form id="data-form" class="mt-5">
+                <div class="flex items-center justify-center">
+                    <label for="file-upload"
+                        class="cursor-pointer bg-indigo-100 text-indigo-600 py-2 px-4 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Upload File
+                    </label>
+                    <input id="file-upload" type="file" class="hidden" name="data"/>
+                </div>
+    
+    
+                <input type="submit" value="Process"
+                    class="w-full mt-5 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            </form>
+    
+            <div id="preview-data-container" class="hidden mt-12">
+    
             </div>
 
+            <div class="section-controller flex justify-between mt-5">
+                <button class="w-auto bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Back
+                </button>                  
+                <button class="w-auto bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Next
+                </button>                  
+            </div>            
+        </section>
 
-            <input type="submit" value="Process"
-                class="w-full mt-5 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-        </form>
 
-        <div id="preview-data-container" style="display: none; margin-top: 3rem;">
-
-        </div>
-
-        <hr>
-
-        <div class="flex flex-col items-center justify-center space-y-2">
-            <label for="fruit-select"
-                class="text-indigo-600 py-2 px-4">
-                Select Model
-            </label>
-            <select id="fruit-select" name="fruit" class="border border-indigo-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                <option value="single">Single feature</option>
-                <option value="multi">Multi feature</option>
-            </select>
-        </div>                
+        <section id="model-selection" class="hidden">
+            <div class="flex flex-col items-center justify-center space-y-2">
+                <label for="fruit-select"
+                    class="text-indigo-600 py-2 px-4">
+                    Select Model
+                </label>
+                <select id="fruit-select" name="fruit" class="border border-indigo-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <option value="single">Single feature</option>
+                    <option value="multi">Multi feature</option>
+                </select>
+            </div>
+        </section>
     </main>
 
     <script src="script.js"></script>
