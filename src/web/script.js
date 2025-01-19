@@ -20,7 +20,11 @@ const featureSelect = document.getElementById('feature-select')
 const labelSelectionContainer = document.getElementById('label-selection-container')
 const labelSelect = document.getElementById('label-select')
 
+const equationResultContainer = document.getElementById('equation-result-container')
 const equationResult = document.getElementById('equation-result')
+const btnCopy = document.getElementById('btn-copy')
+
+
 /**
  * Linear equation result based on data processing
  * 
@@ -253,7 +257,9 @@ function singleFeatureProcess(feature, label) {
 
     equation = (x) => a + (b * x)
 
-    equationResult.textContent = `Equation result: y = ${a} + ${b}x`
+    equationResultContainer.classList.remove('hidden')
+    equationResultContainer.classList.add('flex')
+    equationResult.textContent = `y = ${a} + ${b}x`
 }
 
 
@@ -270,3 +276,13 @@ function multiFeatureProcess(features, label) {
     console.log('hey its me multi')
     console.log(fileData)
 }
+
+
+btnCopy.addEventListener('click', () => {
+    navigator.clipboard.writeText(equationResult.textContent).then(() => {
+        alert('Copied to clipboard!')
+    }).catch(err => {
+        console.error(err)
+        alert('Failed to copy text!')
+    })
+})
