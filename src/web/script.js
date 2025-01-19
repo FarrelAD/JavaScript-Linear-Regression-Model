@@ -1,14 +1,66 @@
 const dataForm = document.getElementById('data-form')
 const inputFile = document.getElementById('input-file')
 const fileName = document.getElementById('file-name')
+
 const btnPreviewData = document.getElementById('btn-preview-data')
 const previewData = document.getElementById('preview-data-container')
 
+const btnPrev = document.getElementById('btn-prev')
+const btnNext = document.getElementById('btn-next')
+
+const sections = document.querySelectorAll('section')
 
 
+const modelForm = document.getElementById('model-form')
+const modelSelection = document.getElementById('model-selection')
+const featureCheckboxContainer = document.getElementById('feature-checkbox-container')
+const featureCheckbox = document.getElementById('feature-checkbox')
+const featureSelectionContainer = document.getElementById('feature-selection-container')
+const featureSelect = document.getElementById('feature-select')
+const labelSelectionContainer = document.getElementById('label-selection-container')
+const labelSelect = document.getElementById('label-select')
 
+const equationResult = document.getElementById('equation-result')
+/**
+ * Linear equation result based on data processing
+ * 
+ * @param {number} x - a feature data
+ * @returns {number} a label/target/`y` value result
+ */
+let equation = null
+
+// Global data
 let currentSection = 1
+let fileData = null 
 
+
+
+btnPrev.addEventListener('click', () => {
+    sections[currentSection - 1].classList.toggle('hidden')
+    currentSection--
+    sections[currentSection - 1].classList.toggle('hidden')
+    if (currentSection == 1) {
+        btnPrev.classList.toggle('invisible')
+    }
+})
+
+btnNext.addEventListener('click', () => {
+    sections[currentSection - 1].classList.toggle('hidden')
+    currentSection++
+    sections[currentSection - 1].classList.toggle('hidden')
+    if (currentSection > 1) {
+        if (btnPrev.classList.contains('invisible')) {
+            btnPrev.classList.remove('invisible')
+        }
+    }
+})
+
+
+
+
+//////////////////////////////////////////////////
+//// FIRST SECTION SCRIPT
+//////////////////////////////////////////////////
 
 dataForm.addEventListener('submit', function(e) {
     e.preventDefault()
@@ -28,7 +80,21 @@ dataForm.addEventListener('submit', function(e) {
 
     reader.onload = (e) => {
         const fileContent = e.target.result
-        const rows = fileContent.split(/[\r\n]+/).map(row => row.split(','))
+        fileData = fileContent
+                        .split(/[\r\n]+/)
+                        .map(row => row.split(','))
+                        .map((val, index, array) => {
+                            if (index == 0) return
+                            
+                            const obj = {}
+                        
+                            for (let i = 0; i < array[0].length; i++) {
+                                obj[array[0][i]] = val[i]
+                            }
+                            return obj
+                        })
+        fileData.shift()
+
         
         let previewedTable = `
         <table class="min-w-full bg-white border border-gray-200 rounded-lg">
@@ -36,30 +102,42 @@ dataForm.addEventListener('submit', function(e) {
                 <tr class="bg-gray-100 border-b border-gray-200">
         `
 
-        for (const item of rows.shift()) {
-            previewedTable += `<td class="py-2 px-4 text-left text-sm font-medium text-gray-600">${item}</td>`
+        for (const key in fileData[0]) {
+            previewedTable += `<td class="py-2 px-4 text-left text-sm font-medium text-gray-600">${key}</td>`
         }
 
         previewedTable += `
                 </tr>
             </thead>
+            <tbody>
         `
 
-        for (const row of rows) {
+        for (const row of fileData) {
             previewedTable += `<tr class="border-b hover:bg-gray-50">`
-            for (const item of row) {
+            for (const item of Object.values(row)) {
                 previewedTable += `<td class="py-2 px-4 text-sm text-gray-700">${item}</td>`
             }
             previewedTable += `</tr>`
-
         }
+        previewedTable += `</tbody>`
 
         previewData.innerHTML = previewedTable
+
+        for (const key in fileData[0]) {
+            featureSelect.innerHTML += `<option value="${key}">${key}</option>`
+            labelSelect.innerHTML += `<option value="${key}">${key}</option>`
+            featureCheckbox.innerHTML += `
+                <label class="flex items-center text-gray-700">
+                    <input type="checkbox" name="features" class="mr-2 leading-tight">
+                    ${key}
+                </label>`
+        }
     }
 
     reader.readAsText(file)
 
     btnPreviewData.setAttribute('disabled', true)
+    btnNext.removeAttribute('disabled')
     this.reset()
 })
 
@@ -73,3 +151,122 @@ inputFile.addEventListener('change', function() {
 
     btnPreviewData.removeAttribute('disabled')
 })
+
+
+
+
+
+//////////////////////////////////////////////////
+//// SECOND SECTION SCRIPT
+//////////////////////////////////////////////////
+
+
+modelSelection.addEventListener('change', function(e) {
+    const model = e.target.value
+
+    switch (model) {
+        case 'single': showSingleFeatureForm(); break;
+        case 'multi': showMultiFeatureForm(); break;
+        default: alert('Invalid model type!'); break;
+    }
+})
+
+
+function showSingleFeatureForm() {
+    if (featureCheckboxContainer.classList.contains('flex')) {
+        featureCheckboxContainer.classList.remove('flex')
+        featureCheckboxContainer.classList.add('hidden')
+
+        featureCheckbox.querySelectorAll('input[type="checkbox"')
+                        .forEach(checkbox => {
+                            checkbox.disabled = true
+                        })
+    }
+
+    featureSelectionContainer.classList.remove('hidden')
+    featureSelectionContainer.classList.add('block')
+    featureSelect.disabled = false
+
+    labelSelectionContainer.classList.remove('hidden')
+}
+
+
+function showMultiFeatureForm() {
+    if (featureSelectionContainer.classList.contains('block')) {
+        featureSelectionContainer.classList.remove('block')
+        featureSelectionContainer.classList.add('hidden')
+        featureSelect.disabled = true
+    }
+
+    featureCheckboxContainer.classList.remove('hidden')
+    featureCheckboxContainer.classList.add('flex')
+    featureCheckbox.querySelectorAll('input[type="checkbox"')
+                    .forEach(checkbox => {
+                        checkbox.disabled = false
+                    })
+
+    labelSelectionContainer.classList.remove('hidden')
+}
+
+
+modelForm.addEventListener('submit', function(e) {
+    e.preventDefault()
+
+    const formData = new FormData(this)
+
+    const model = formData.get('model')
+    const label = formData.get('label')
+    const feature = formData.get('features') || formData.get('feature')
+
+    switch (model) {
+        case 'single': 
+            singleFeatureProcess(feature, label)
+            break
+        case 'multi': multiFeatureProcess(feature, label); break;
+        default: alert('Invalid model type!'); break;
+    }
+})
+
+
+/**
+ * Process linear regression with single feature
+ * 
+ * Formula
+ * `y = β0 ​+ β1​x1`
+ * 
+ * @param {string} feature 
+ * @param {string} label 
+ */
+function singleFeatureProcess(feature, label) {
+    const sumX = fileData.reduce((sum, val) => sum + parseFloat(val[feature]), 0)
+    const sumY = fileData.reduce((sum, val) => sum + parseFloat(val[label]), 0)
+    const sumXY = fileData.reduce((sum, val) => sum + (parseFloat(val[feature]) * parseFloat(val[label])), 0)
+    const sumXSquared = fileData.reduce((sum, val) => sum + parseFloat(val[feature]) ** 2, 0)
+    const sumXTimesSumY = sumX * sumY
+
+    const b = (
+        ((fileData.length * sumXY) - sumXTimesSumY) /
+        ((fileData.length * sumXSquared) - (sumX ** 2))
+    )
+
+    const a = (sumY / fileData.length) - (b * (sumX / fileData.length))
+
+    equation = (x) => a + (b * x)
+
+    equationResult.textContent = `Equation result: y = ${a} + ${b}x`
+}
+
+
+/**
+ * Process linear regression with multi feature
+ * 
+ * Formula
+ * `y = β0 ​+ β1​x1 ​+ β2​x2 ​+ ... + βn​xn​`
+ * 
+ * @param {string[]} features 
+ * @param {string} label 
+ */
+function multiFeatureProcess(features, label) {
+    console.log('hey its me multi')
+    console.log(fileData)
+}
