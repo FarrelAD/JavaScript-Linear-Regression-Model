@@ -5,8 +5,12 @@ const fileName = document.getElementById('file-name')
 const btnPreviewData = document.getElementById('btn-preview-data')
 const previewData = document.getElementById('preview-data-container')
 
-const btnPrev = document.getElementById('btn-prev')
+const btnBackContainer = document.getElementById('btn-back-container')
+const btnBack = document.getElementById('btn-back')
+const btnBackSupportText = document.getElementById('btn-back-support-text')
+const btnNextContainer = document.getElementById('btn-next-container')
 const btnNext = document.getElementById('btn-next')
+const btnNextSupportText = document.getElementById('btn-next-support-text')
 
 const sections = document.querySelectorAll('section')
 
@@ -34,29 +38,53 @@ const btnCopy = document.getElementById('btn-copy')
 let equation = null
 
 // Global data
-let currentSection = 1
+let currentSection = 0
+const sectionsArray = [
+    'Input data',
+    'Model selection',
+    'Model visualization',
+    'Model testing'
+]
 let fileData = null 
 
 
 
-btnPrev.addEventListener('click', () => {
-    sections[currentSection - 1].classList.toggle('hidden')
+btnBack.addEventListener('click', () => {
+    sections[currentSection].classList.toggle('hidden')
     currentSection--
-    sections[currentSection - 1].classList.toggle('hidden')
-    if (currentSection == 1) {
-        btnPrev.classList.toggle('invisible')
+    sections[currentSection].classList.toggle('hidden')
+
+    if (currentSection == 0) {
+        btnBackContainer.classList.toggle('invisible')
     }
+
+    if (currentSection < sectionsArray.length) {
+        if (btnNextContainer.classList.contains('invisible')) {
+            btnNextContainer.classList.remove('invisible')
+        }
+    }
+
+    btnBackSupportText.textContent = sectionsArray[currentSection - 1] || ''
+    btnNextSupportText.textContent = sectionsArray[currentSection + 1] || ''
 })
 
 btnNext.addEventListener('click', () => {
-    sections[currentSection - 1].classList.toggle('hidden')
+    sections[currentSection].classList.toggle('hidden')
     currentSection++
-    sections[currentSection - 1].classList.toggle('hidden')
-    if (currentSection > 1) {
-        if (btnPrev.classList.contains('invisible')) {
-            btnPrev.classList.remove('invisible')
+    sections[currentSection].classList.toggle('hidden')
+
+    if (currentSection == sectionsArray.length - 1) {
+        btnNextContainer.classList.toggle('invisible')
+    }
+
+    if (currentSection > 0) {
+        if (btnBackContainer.classList.contains('invisible')) {
+            btnBackContainer.classList.remove('invisible')
         }
     }
+    
+    btnBackSupportText.textContent = sectionsArray[currentSection - 1] || ''
+    btnNextSupportText.textContent = sectionsArray[currentSection + 1] || ''
 })
 
 

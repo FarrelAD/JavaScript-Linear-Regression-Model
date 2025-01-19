@@ -98,14 +98,31 @@
 
 
 
+        <section id="model-visualization" class="hidden">
+            <h1>Visualization</h1>
+        </section>
 
-        <nav class="section-controller fixed bottom-0 left-0 w-full flex justify-between bg-indigo-600 p-4 border-t border-indigo-700 lg:px-24">
-            <button id="btn-prev" class="w-auto bg-white text-indigo-600 py-2 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 invisible">
-                Back
-            </button>                  
-            <button id="btn-next" class="w-auto bg-white text-indigo-600 py-2 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed" disabled>
-                Next
-            </button>
+
+
+        <section id="model-testing" class="hidden">
+            <h1>Testing</h1>
+        </section>
+
+
+
+        <nav id="section-controller" class="fixed bottom-0 left-0 w-full flex justify-between bg-indigo-600 p-4 border-t border-indigo-700 lg:px-24">
+            <div id="btn-back-container" class="flex items-center space-x-3 invisible">
+                <button id="btn-back" class="w-auto bg-white text-indigo-600 py-2 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Back
+                </button>
+                <span id="btn-back-support-text" class="text-white">Input data</span>
+            </div>
+            <div id="btn-next-container" class="flex items-center space-x-3">
+                <span id="btn-next-support-text" class="text-white">Model selection</span>
+                <button id="btn-next" class="w-auto bg-white text-indigo-600 py-2 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed" disabled>
+                    Next
+                </button>
+            </div>
         </nav>
     </main>
 
