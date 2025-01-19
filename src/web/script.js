@@ -338,7 +338,7 @@ function visualize(feature, label) {
     const featureArray = fileData.map(val => val[feature])
     const maxFeatureSampleData = Math.max(...featureArray)
     const minFeatureSampleData = Math.min(...featureArray)
-    console.log(maxFeatureSampleData)
+
     const data = {
         datasets: [{
             label: 'Scatter Dataset',
@@ -391,3 +391,24 @@ function visualize(feature, label) {
     chartInstance = new Chart(ctx, config)
 }
 
+
+
+//////////////////////////////////////////////////
+//// FOURTH SECTION SCRIPT
+//////////////////////////////////////////////////
+
+const testForm = document.getElementById('test-form')
+const predictionResultContainer = document.getElementById('prediction-result-container')
+const predictionResult = document.getElementById('prediction-result')
+
+testForm.addEventListener('submit', function(e) {
+    e.preventDefault()
+
+    const formData = new FormData(this)
+
+    const input = formData.get('input')
+
+    predictionResultContainer.classList.remove('hidden')
+    predictionResultContainer.classList.add('flex')
+    predictionResult.textContent = equation(parseFloat(input))
+})

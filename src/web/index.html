@@ -105,8 +105,25 @@
 
 
 
-        <section id="model-testing" class="hidden">
-            <h1>Testing</h1>
+        <section id="model-testing" class="hidden pb-20">
+            <h3 class="text-indigo-600 font-bold text-center">Testing</h3>
+
+            <form id="test-form">
+                <input type="number" name="input" id="input-data" placeholder="Enter your data here"
+                    class="w-full mt-5 bg-gray-100 text-gray-900 py-2 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                <input type="submit" id="btn-process" value="Process" class="w-full mt-5 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            </form>
+
+            <div id="prediction-result-container" class="hidden flex-col items-start w-full sm:w-auto mt-5 p-6 bg-gray-100 border border-gray-300 rounded-lg shadow-lg">
+                <p>Prediction result</p>
+                <div class="flex items-center justify-between w-full">
+                    <p id="prediction-result" class="text-2xl sm:text-4xl text-indigo-600 font-mono font-semibold">
+                    </p>
+                    <button id="btn-copy" class="text-sm sm:text-lg text-white bg-indigo-600 py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Copy
+                    </button>
+                </div>
+            </div>
         </section>
 
 
