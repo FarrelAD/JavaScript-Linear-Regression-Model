@@ -353,7 +353,7 @@ function visualize(feature, label) {
             borderWidth: 1
         },
         {
-            label: 'Line y = 2x + 10',
+            label: `Line ${equationResult.textContent}`,
             data: [
                 { x: minFeatureSampleData, y: equation(minFeatureSampleData) },
                 { x: maxFeatureSampleData, y: equation(maxFeatureSampleData) }
