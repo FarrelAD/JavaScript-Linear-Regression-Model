@@ -29,6 +29,8 @@ const equationResult = document.getElementById('equation-result')
 const btnCopy = document.getElementById('btn-copy')
 
 
+
+// Global data
 /**
  * Linear equation result based on data processing
  * 
@@ -36,17 +38,16 @@ const btnCopy = document.getElementById('btn-copy')
  * @returns {number} a label/target/`y` value result
  */
 let equation = null
-
-// Global data
 let currentSection = 0
 const sectionsArray = [
     'Input data',
-    'Model selection',
+    'Model selection', 
     'Model visualization',
     'Model testing'
 ]
 let fileData = null 
 
+let chartInstance = null
 
 
 btnBack.addEventListener('click', () => {
@@ -117,17 +118,21 @@ dataForm.addEventListener('submit', function(e) {
                         .map(row => row.split(','))
                         .map((val, index, array) => {
                             if (index == 0) return
+
+                            if (val.every(cell => cell.trim() === "")) return
                             
                             const obj = {}
                         
                             for (let i = 0; i < array[0].length; i++) {
-                                obj[array[0][i]] = val[i]
+                                if (val[i] !== undefined && val[i] !== null) {
+                                    obj[array[0][i]] = val[i].trim()
+                                }
                             }
                             return obj
                         })
+                        .filter(obj => obj)
         fileData.shift()
 
-        
         let previewedTable = `
         <table class="min-w-full bg-white border border-gray-200 rounded-lg">
             <thead>
@@ -155,6 +160,9 @@ dataForm.addEventListener('submit', function(e) {
 
         previewData.innerHTML = previewedTable
 
+        featureSelect.innerHTML = ''
+        labelSelect.innerHTML = ''
+        featureCheckbox.innerHTML = ''
         for (const key in fileData[0]) {
             featureSelect.innerHTML += `<option value="${key}">${key}</option>`
             labelSelect.innerHTML += `<option value="${key}">${key}</option>`
@@ -251,9 +259,7 @@ modelForm.addEventListener('submit', function(e) {
     const feature = formData.get('features') || formData.get('feature')
 
     switch (model) {
-        case 'single': 
-            singleFeatureProcess(feature, label)
-            break
+        case 'single': singleFeatureProcess(feature, label); break;
         case 'multi': multiFeatureProcess(feature, label); break;
         default: alert('Invalid model type!'); break;
     }
@@ -288,6 +294,8 @@ function singleFeatureProcess(feature, label) {
     equationResultContainer.classList.remove('hidden')
     equationResultContainer.classList.add('flex')
     equationResult.textContent = `y = ${a} + ${b}x`
+
+    visualize(feature, label)
 }
 
 
@@ -314,3 +322,72 @@ btnCopy.addEventListener('click', () => {
         alert('Failed to copy text!')
     })
 })
+
+
+//////////////////////////////////////////////////
+//// THIRD SECTION SCRIPT
+//////////////////////////////////////////////////
+
+function visualize(feature, label) {
+    if (chartInstance) chartInstance.destroy()
+
+    const chart = document.getElementById('chart')
+    const ctx = chart.getContext('2d')
+
+
+    const featureArray = fileData.map(val => val[feature])
+    const maxFeatureSampleData = Math.max(...featureArray)
+    const minFeatureSampleData = Math.min(...featureArray)
+    console.log(maxFeatureSampleData)
+    const data = {
+        datasets: [{
+            label: 'Scatter Dataset',
+            data: fileData.map(val => {
+                return {
+                    x: val[feature],
+                    y: val[label]
+                }
+            }),
+            backgroundColor: 'rgba(0, 123, 255, 0.6)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 1
+        },
+        {
+            label: 'Line y = 2x + 10',
+            data: [
+                { x: minFeatureSampleData, y: equation(minFeatureSampleData) },
+                { x: maxFeatureSampleData, y: equation(maxFeatureSampleData) }
+            ],
+            type: 'line',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 2,
+            fill: false,
+            tension: 0
+        }]
+    }
+
+    const config = {
+        type: 'scatter',
+        data: data,
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    ticks: {
+                        beginAtZero: true
+                    }
+                },
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    }
+
+    chartInstance = new Chart(ctx, config)
+}
+
