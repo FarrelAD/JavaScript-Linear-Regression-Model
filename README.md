@@ -1,4 +1,4 @@
-# <img src="docs/img/king-js.svg" style="height: 1.5em;"> JavaScript Linear Regression
+# <img src="docs/img/king-js.svg"> JavaScript Linear Regression
 
 Ini adalah percobaan implementasi model regresi linear pada program komputer. Program dibuat dengan bahasa pemrograman JavaScript dan dengan *runtime* [Node.js](https://nodejs.org/) dengan tanpa menggunakan bantuan library atau framework pembantu perhitungan matematis. Program yang dibuat ada dua versi, CLI (*Command Line Interface*) dan juga website.
 
@@ -27,7 +27,25 @@ Ini adalah percobaan implementasi model regresi linear pada program komputer. Pr
 
 Berikut adalah contoh ketika program dijalankan:
 
-![Preview program](docs/img/program-preview.gif)
+<table width="100%">
+    <tr>
+        <th>CLI</th>
+    </tr>
+    <tr>
+        <td>
+            <img src="docs/img/cli-program-preview.gif">
+        </td>
+    </tr>
+    <tr>
+        <th>Web</th>
+    </tr>
+    <tr>
+        <td>
+            <img src="docs/img/web-program-preview.gif">
+        </td>
+    </tr>
+</table>
+
 
 
 # Kustomisasi 🛠️
