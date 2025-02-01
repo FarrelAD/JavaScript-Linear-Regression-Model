@@ -1,5 +1,13 @@
 # <img src="docs/img/king-js.svg"> JavaScript Linear Regression
 
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://github.com/topics/javascript)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)](https://github.com/topics/nodejs)
+[![CLI](https://img.shields.io/badge/CLI-000000?style=flat)](https://github.com/topics/cli)
+[![Linear Regression](https://img.shields.io/badge/Linear_Regression-FFA500?style=flat)](https://github.com/topics/linear-regression)
+[![Machine Learning](https://img.shields.io/badge/Machine_Learning-27AE60?style=flat)](https://github.com/topics/machine-learning)
+
+
+
 Ini adalah percobaan implementasi model regresi linear pada program komputer. Program dibuat dengan bahasa pemrograman JavaScript dan dengan *runtime* [Node.js](https://nodejs.org/) dengan tanpa menggunakan bantuan library atau framework pembantu perhitungan matematis. Program yang dibuat ada dua versi, CLI (*Command Line Interface*) dan juga website.
 
 <div align="center">
